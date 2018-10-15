@@ -19,20 +19,68 @@ kbd>button{
     right: 0;
     display: none;
     font-size: 12px;
+    background: #000;
+    color: white;
+    border: none;
 }
 kbd:hover>button{
     display: inline-block;
 }
+body{
+    background:grey url(./wall.jpg) no-repeat center center;
+    background-size: cover;
+}
 main{
     text-align: center;
+    display: flex; /*使main变成弹性盒子*/
+    justify-content: center;  /*水平居中*/
+    align-items: center; /*垂直居中*/
+    height: 100vh;  /*vh--viewport height 视口高度*/
+
 }
-#mainxx{
+#main{
     display: inline-block;
+    background: rgba(255,255,255,0.2);
+    border-radius: 10px;
+    padding: 0 10px;
 }
-#mainxx>div:nth-child(2){
-    margin-left: 2em;
+#main>div:nth-child(2){
+    margin-left: -20px;
 }
-#mainxx>div:nth-child(3){
-    margin-left: 4em;
+#main>div:nth-child(3){
+    margin-left: -78px;
+    margin-bottom: 16px;
+}
+.key{
+    width: 50px;
+    height: 40px;
+    background: -webkit-linear-gradient(top, #292929 0%,#111111 100%);
+    color: #c5c5c5;
+    border: none;
+    border: 1px solid #373737;
+    border-radius: 5px;
+    box-shadow: 0 0 0 1px #1a1b1c,0 0 0 2px #1F2020,0 3PX 0 2px #080808;
+    /* display: inline-flex;
+    align-items: center;
+    justify-content: center; */
+    margin: 0 6px;
+    font-size: 16px;
+    font-family: Helvetica;
+    position: relative;
+}
+.row{
+   margin-top: 16px;
+}
+.key img{
+    width: 16px;
+    height: 16px;
+    position: absolute;
+    left: 4px;
+    bottom: 2px;
+}
+.key .text{
+    position: absolute;
+    top: 2px;
+    left: 4px;
 }
 

@@ -10,69 +10,149 @@
 <body>
     <header></header>
     <main >
-        <div id="mainxx"></div>  
+        <div class="wrapper" id="main"></div>       
     </main>
     <footer></footer>
     <script>
-        var key={
+        //1. 初始化数据
+        
+
+        
+        var hashA=init()
+        var key=hashA['key']
+        var hash=hashA['hash']
+
+
+        //2. 生成键盘
+
+        //  generateKeyboard(key,hash)
+
+        // function generateKeyboard(key,hash){
+            for(var index=0;index<key['length'];index++){
+                var div = tag('div',{className:'row'})
+
+
+                main.appendChild(div)
+                
+                var row = key[index]  //第一个数组  第二个数组  第三个数组 
+
+                for(var index2=0;index2<row['length'];index2++){
+                    var kbd = tag('kbd',{className:'key'})
+
+                    var span = createSpan(row[index2])
+                
+                
+                    var button = createButton(row[index2])
+
+                
+                    var img = createImage(hash[row[index2]])
+                
+
+                    kbd.appendChild(span)
+                    div.appendChild(kbd)
+                    kbd.appendChild(button)   
+                    kbd.appendChild(img)
+
+                }
+            }  
+        // }
+        
+       
+
+          
+     
+        
+        //3. 监听键盘
+        listenToUser(hash)
+
+
+        function listenToUser(hash){
+            document.onkeypress=function(xzkjcnxlkcjlk){
+           var key = xzkjcnxlkcjlk['key']
+           var website = hash[key]
+           //location.href = 'http://' + website  //  在当前地址栏输入
+            window.open('http://'+website,'_blank')
+        }
+        }
+       
+
+
+
+        function init(){
+            var key={
             '0': {0:'q',1:'w',2:'e',3:'r',4:'t',5:'y',6:'u',7:'i',8:'o',9:'p', length:10},
             '1': ['a','s','d','f','g','h','j','k','l'],
             '2': ['z','x','c','v','b','n','m'],
             'length': 3
+            }
+            var hash = {
+                'i':'iqiyi.com',
+                't':'taobao.com',
+                'y':'youtube.com',
+                't':'twitter.com',
+                'q':'qq.com',
+                'w':'weibo.com',
+                'b':'baidu.com',
+                'z':'zhihu.com',
+            }
+            //取出 localStorage 中的 zzz  所对应的  hash
+            var hashInLocalStorage = getFromLocalStorage('zzz')
+            if(hashInLocalStorage){
+                hash = hashInLocalStorage
+            }
+            return{
+                "key": key,
+                "hash":hash
+            }
         }
-        var hash = {
-            'i':'iqiyi.com',
-            't':'taobao.com',
-            'y':'youtube.com',
-            't':'twitter.com',
-            'q':'qq.com',
-            'w':'weibo.com',
-            'b':'baidu.com',
-            'z':'zhihu.com',
+
+        function getFromLocalStorage(name){
+            return JSON.parse(localStorage.getItem(name) || 'null')
         }
-        //取出 localStorage 中的 zzz  所对应的  hash
-        var hashInLocalStorage = JSON.parse(localStorage.getItem('zzz') || 'null')
-        if(hashInLocalStorage){
-            hash = hashInLocalStorage
+
+        function tag(tagName,attributes){// 函数的名字是随意取的,,tag ,c a ...都行
+            var element = document.createElement(tagName)
+            for(var key in attributes){
+                element[key] = attributes[key]
+            }
+            return element
         }
-        index=0
-       // index2=0 // 不能写到这里啊,写到这里代码第二次运行  内循环index2=10啦,就不循环啦,所以要不停的给index2重新赋值
-        while(index<key['length']){
-            divxx = document.createElement('div')
-            mainxx.appendChild(divxx)
-            row = key[index]  //第一个数组  第二个数组  第三个数组 
-            index2=0
-            while(index2<row['length']){  //0`9   0`8   0`6
-                kbdxx = document.createElement('kbd')
-                kbdxx.textContent = row[index2]
-                divxx.appendChild(kbdxx)
-                buttonxx = document.createElement('button')
-                buttonxx.textContent = '编辑'
-                kbdxx.appendChild(buttonxx)   
-                //kbdxx.textContent = row[index2] //为什么在这里上面效果不显示呢? 
-                                  //因为在这里重新赋值,把已经显示的button标签覆盖啦
-                buttonxx.id = row[index2]
-                buttonxx.onclick = function(xzkjcnxlkcjlk){
-                    //console.log(buttonxx)//当点击事件发生时,循环已经结束,不是点击一次循环一次
-                    key = xzkjcnxlkcjlk.target.id
+
+        function createSpan(textContent){
+            var span = tag('span',{className:'text'})
+            span.textContent = textContent
+            return span
+        }
+        function createButton(id){
+            var button = tag('button',{textContent:'编辑'})
+                button.id = id
+                button.onclick = function(xzkjcnxlkcjlk){
+                    var button2 = xzkjcnxlkcjlk.target
+                    var img2 = button2.previousSibling
+                    var key = button2.id
                     x = prompt('给我一个网址')
                     hash[key] = x   //  hash 变更
-                    localStorage.setItem('zzz',JSON.stringify(hash))//这个api只能存字符串
-                    console.log(hash)
-                
-                }                  
-                                  
-                index2=index2+1   
-            }
-            index=index+1
+                    img2.src = 'http://' + x + '/favicon.ico'
+                    img.onerror = function(xxx){
+                        xxx.target.src = ''
+                    }
+                    localStorage.setItem('zzz',JSON.stringify(hash))//这个api只能存字符串 
+                }
+                return button
         }
-        document.onkeypress=function(xzkjcnxlkcjlk){
-           key = xzkjcnxlkcjlk['key']
-           website = hash[key]
-           //location.href = 'http://' + website  //  在当前地址栏输入
-            window.open('http://'+website,'_blank')
+        function createImage(domain){
+            var img = tag('img')
+                if(hash[row[index2]]){
+                    img.src = 'http://' + domain +'/favicon.ico'
+                }
+                else{
+                    img.src = ''
+                }
+                img.onerror = function(xxx){
+                    xxx.target.src = ''
+                }
+                return img
         }
-        
     </script>
 </body>
 </html>
